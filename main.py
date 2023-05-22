@@ -37,25 +37,35 @@ soup = BeautifulSoup(yc_web_page, "html.parser")
 # print(soup.title)
 
 ## TO FIND THE FIRST OCCURANCE USE THE CODE BELOW ##
-article_tag = soup.find(class_="titleline")
-print(article_tag)
-article_text = article_tag.get_text()
-print(article_text)
-article_link = article_tag.get("href")
-print(article_link)
-article_upvote = soup.find(class_="score").get_text()
-print(article_upvote)
+# article_tag = soup.find(class_="titleline")
+# print(article_tag)
+# article_text = article_tag.get_text()
+# print(article_text)
+# article_link = article_tag.find("a", href=True)[0]['href']
+# article_link = article_tag.get("href")
+# print(article_link)
+# article_upvote = soup.find(class_="score").get_text()
+# print(article_upvote)
 
 ## TO FIND ALL THE ARTICLES USE THE CODE BELOW ##
 
-# upvotes = soup.find_all(class_="score")
-# for upvote in upvotes:
-#     print(upvote.getText())
+articles = soup.find_all(class_="titleline")
+article_texts = []
+article_links = []
+for article_tag in articles:
+    text = article_tag.getText()
+    article_texts.append(text)
+    link = article_tag.findAll("a", href=True)[0]['href']
+    article_links.append(link)
 
-# articles = soup.find_all(class_="titleline")
-# for article in articles:
-#     print(article.getText())
+article_upvotes = [int(score.getText().split()[0]) for score in soup.find_all(name="span", class_="score")]
+largest_number = max(article_upvotes)
+largest_index = article_upvotes.index(largest_number)
+print(article_texts[largest_index])
+print(article_links[largest_index])
+print(largest_number)
 
-# links = soup.find_all(name="span", class_="titleline")
-# for link in links:
-#     print(link.get("href"))
+# print(article_texts)
+# print(article_links)
+# print(article_upvotes)
+
